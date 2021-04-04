@@ -1,3 +1,5 @@
+##code for portfolio and financial time series analysis in Qiskit is in progress##
+
 import math
 import operator
 import logging
