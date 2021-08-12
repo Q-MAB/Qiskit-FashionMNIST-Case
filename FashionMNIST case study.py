@@ -1,18 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
-
-
-
-# In[3]:
-
-
 import numpy as np
 
-# Additional torch-related imports
 from torch import cat, no_grad, manual_seed
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
@@ -63,12 +50,8 @@ import torchvision.transforms as transforms
 from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
-# declare quantum instance
+# Quantum instance declared
 qi = QuantumInstance(Aer.get_backend('aer_simulator_statevector'))
-
-
-# In[434]:
-
 
 
 ###training and test data are downloaded from FashionMNIST and transformed into tensors### 
@@ -86,8 +69,6 @@ test_data = datasets.FashionMNIST(
     transform=ToTensor()
 )
 
-
-# In[435]:
 
 
 ###Inspecting the images in the training data set with their labels###
@@ -117,13 +98,6 @@ for i in range(1, cols * rows + 1):
 plt.show()
 
 
-# In[ ]:
-
-
-
-
-
-# In[436]:
 
 
 
@@ -142,7 +116,6 @@ X_train.targets = X_train.targets[idx]
 train_loader = DataLoader(X_train, batch_size=64, shuffle=True)
 
 
-# In[437]:
 
 
 # Test Dataset
@@ -164,7 +137,6 @@ X_test.targets = X_test.targets[idx]
 test_loader = DataLoader(X_test, batch_size=64, shuffle=True)
 
 
-# In[439]:
 
 
 # Define QNN
@@ -173,8 +145,6 @@ ansatz = RealAmplitudes(2, reps=1, entanglement='linear')
 qnn4 = TwoLayerQNN(2, feature_map, ansatz, input_gradients=True, exp_val=AerPauliExpectation(), quantum_instance=qi)
 print(qnn4.operator)
 
-
-# In[440]:
 
 
 # Define torch NN module
@@ -206,8 +176,6 @@ class Net(Module):
         return torch.cat((x, 1 - x), -1)
 
 
-# In[441]:
-
 
 model = Net()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
@@ -236,8 +204,6 @@ for epoch in range(epochs):
         100. * (epoch + 1) / epochs, loss_list[-1]))
 
 
-# In[443]:
-
 
 # Plot loss convergence
 plt.plot(loss_list)
@@ -245,9 +211,6 @@ plt.title('Hybrid NN Training Convergence')
 plt.xlabel('Training Iterations')
 plt.ylabel('Neg. Log Likelihood Loss')
 plt.show()
-
-
-# In[1]:
 
 
 model.eval()
@@ -269,14 +232,6 @@ with torch.no_grad():
         )
 
 
-# In[ ]:
-
-
-
-
-
-# In[358]:
-
 
 # Display image and label.
 train_features, train_labels = next(iter(train_loader))
@@ -288,8 +243,6 @@ plt.imshow(img, cmap="gray")
 plt.show()
 print(f"Label: {label}")
 
-
-# In[2]:
 
 
 n_samples_show = 5
@@ -316,22 +269,5 @@ with no_grad():
         elif pred.item() == 0:
             axes[count].set_title('Predicted item: T-shirt')  
         count += 1
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 
 
