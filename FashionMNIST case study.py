@@ -1,14 +1,11 @@
 import numpy as np
 import torch
-from torch.utils.data import Dataset
 from torchvision.transforms import ToTensor
 from torch import cat, no_grad, manual_seed
-from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 import torch.optim as optim
 from torch.nn import (Module, Conv2d, Linear, Dropout2d, NLLLoss, MaxPool2d, Flatten, Sequential, ReLU)
 from torch.autograd import Function
-import torch.optim as optim
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
@@ -83,7 +80,7 @@ for i in range(1, cols * rows + 1):
 plt.show()
 
 
-# Load training data into Torch DataLoader
+### Load training data into Torch DataLoader ###
 X_train = training_data
 n_samples = 500
 batch_size = 64
