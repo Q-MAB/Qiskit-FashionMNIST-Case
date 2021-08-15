@@ -1,40 +1,27 @@
 import numpy as np
-
+import torch
+from torch.utils.data import Dataset
+from torchvision.transforms import ToTensor
 from torch import cat, no_grad, manual_seed
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 import torch.optim as optim
-from torch.nn import (Module, Conv2d, Linear, Dropout2d, NLLLoss,
-                     MaxPool2d, Flatten, Sequential, ReLU)
-
+from torch.nn import (Module, Conv2d, Linear, Dropout2d, NLLLoss, MaxPool2d, Flatten, Sequential, ReLU)
 from torch.autograd import Function
-from torchvision import datasets, transforms
 import torch.optim as optim
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import Dataset, DataLoader
+from torch import Tensor
+from torch.optim import LBFGS
+from torchviz import make_dot
+import torchvision
+from torchvision.io import read_image
+from torch.autograd import Variable
 
 import qiskit
 from qiskit import transpile, assemble
 from qiskit.visualization import *
-
-import torch
-from torch.utils.data import Dataset
-from torchvision import datasets
-from torchvision.transforms import ToTensor
-import matplotlib.pyplot as plt
-import os
-import pandas as pd
-from torchvision.io import read_image
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-from torch import Tensor
-from torch.nn import Linear, CrossEntropyLoss, MSELoss
-from torch.optim import LBFGS
-from torchviz import make_dot
-
-
 from qiskit  import Aer, QuantumCircuit
 from qiskit.utils import QuantumInstance
 from qiskit.opflow import AerPauliExpectation
@@ -43,18 +30,18 @@ from qiskit.circuit.library import RealAmplitudes, ZZFeatureMap
 from qiskit_machine_learning.neural_networks import CircuitQNN, TwoLayerQNN
 from qiskit_machine_learning.connectors import TorchConnector
 
-from torch.autograd import Variable
-
-import torchvision
-import torchvision.transforms as transforms
-from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
-# Quantum instance declared
+
+import matplotlib.pyplot as plt
+import os
+import pandas as pd
+
+# Declare Quantum instance 
 qi = QuantumInstance(Aer.get_backend('aer_simulator_statevector'))
 
 
-###training and test data are downloaded from FashionMNIST and transformed into tensors### 
+### Training and test data downloaded from FashionMNIST and transformed into tensors ###
 training_data = datasets.FashionMNIST(
     root="data",
     train=True,
@@ -70,9 +57,7 @@ test_data = datasets.FashionMNIST(
 )
 
 
-
-###Inspecting the images in the training data set with their labels###
-
+### Inspecting the images in the training data set with their labels ###
 labels_map = {
     0: "T-Shirt",
     1: "Trouser",
@@ -98,9 +83,7 @@ for i in range(1, cols * rows + 1):
 plt.show()
 
 
-
-
-
+# Load training data into Torch DataLoader
 X_train = training_data
 n_samples = 500
 batch_size = 64
@@ -116,13 +99,7 @@ X_train.targets = X_train.targets[idx]
 train_loader = DataLoader(X_train, batch_size=64, shuffle=True)
 
 
-
-
-# Test Dataset
-# -------------
-
-# Set test shuffle seed (for reproducibility)
-# manual_seed(5)
+# Load test data into Torch DataLoader
 X_test = test_data
 n_samples = 500
 
@@ -137,18 +114,14 @@ X_test.targets = X_test.targets[idx]
 test_loader = DataLoader(X_test, batch_size=64, shuffle=True)
 
 
-
-
-# Define QNN
+### Two layer QNN constructed ###
 feature_map = ZZFeatureMap(feature_dimension=2, entanglement='linear')
 ansatz = RealAmplitudes(2, reps=1, entanglement='linear')
 qnn4 = TwoLayerQNN(2, feature_map, ansatz, input_gradients=True, exp_val=AerPauliExpectation(), quantum_instance=qi)
 print(qnn4.operator)
 
 
-
-# Define torch NN module
-
+### Torch NN module ###
 class Net(Module):
 
     def __init__(self):
@@ -176,7 +149,7 @@ class Net(Module):
         return torch.cat((x, 1 - x), -1)
 
 
-
+### Model trained and the loss computed ###
 model = Net()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 loss_func = nn.NLLLoss()
@@ -204,8 +177,7 @@ for epoch in range(epochs):
         100. * (epoch + 1) / epochs, loss_list[-1]))
 
 
-
-# Plot loss convergence
+### Loss convergence plotted ###
 plt.plot(loss_list)
 plt.title('Hybrid NN Training Convergence')
 plt.xlabel('Training Iterations')
@@ -213,6 +185,7 @@ plt.ylabel('Neg. Log Likelihood Loss')
 plt.show()
 
 
+### Model evaluated ###
 model.eval()
 with torch.no_grad():
     
@@ -228,23 +201,11 @@ with torch.no_grad():
         
     print('Performance on test data:\n\tLoss: {:.4f}\n\tAccuracy: {:.1f}%'.format(
         sum(total_loss) / len(total_loss),
-        (correct / len(test_loader) / batch_size) * 100)
-        )
+        (correct / len(test_loader) / batch_size) * 100))
 
 
 
-# Display image and label.
-train_features, train_labels = next(iter(train_loader))
-print(f"Feature batch shape: {train_features.size()}")
-print(f"Labels batch shape: {train_labels.size()}")
-img = train_features[0].squeeze()
-label = train_labels[0]
-plt.imshow(img, cmap="gray")
-plt.show()
-print(f"Label: {label}")
-
-
-
+### Predicted images displayed ###
 n_samples_show = 5
 count = 0
 fig, axes = plt.subplots(nrows=1, ncols=n_samples_show, figsize=(15, 5))
@@ -263,7 +224,6 @@ with no_grad():
 
         axes[count].set_xticks([])
         axes[count].set_yticks([])
-        #axes[count].set_title('Predicted {}'.format(pred.item()))   
         if pred.item() == 1:
             axes[count].set_title('Predicted item: Trouser')  
         elif pred.item() == 0:
