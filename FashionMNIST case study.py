@@ -202,7 +202,7 @@ with torch.no_grad():
 
 
 
-### Predicted images displayed ###
+### Predicted images displayed. Either T-shirt or Trouser ###
 n_samples_show = 5
 count = 0
 fig, axes = plt.subplots(nrows=1, ncols=n_samples_show, figsize=(15, 5))
