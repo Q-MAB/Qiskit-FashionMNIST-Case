@@ -118,7 +118,7 @@ qnn4 = TwoLayerQNN(2, feature_map, ansatz, input_gradients=True, exp_val=AerPaul
 print(qnn4.operator)
 
 
-### Torch NN module ###
+### Torch NN module from Qiskit ###
 class Net(Module):
 
     def __init__(self):
