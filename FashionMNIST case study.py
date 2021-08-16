@@ -221,10 +221,10 @@ with no_grad():
 
         axes[count].set_xticks([])
         axes[count].set_yticks([])
-        if pred.item() == 1:
+        if pred.item() == 0:
+            axes[count].set_title('Predicted item: T-Shirt')  
+        elif pred.item() == 1:
             axes[count].set_title('Predicted item: Trouser')  
-        elif pred.item() == 0:
-            axes[count].set_title('Predicted item: T-shirt')  
         count += 1
 
 
