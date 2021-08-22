@@ -15,7 +15,6 @@ from torchviz import make_dot
 import torchvision
 from torchvision.io import read_image
 from torch.autograd import Variable
-
 import qiskit
 from qiskit import transpile, assemble
 from qiskit.visualization import *
@@ -26,10 +25,6 @@ from qiskit.circuit import Parameter
 from qiskit.circuit.library import RealAmplitudes, ZZFeatureMap
 from qiskit_machine_learning.neural_networks import CircuitQNN, TwoLayerQNN
 from qiskit_machine_learning.connectors import TorchConnector
-
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score
-
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
