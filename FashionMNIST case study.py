@@ -98,7 +98,6 @@ train_loader = DataLoader(X_train, batch_size=64, shuffle=True)
 
 # Load test data into Torch DataLoader
 X_test = test_data
-n_samples = 500
 
 # Filter out labels (originally 0-9), leaving only labels 0 and 1
 idx = np.append(np.where(X_test.targets == 0)[0][:n_samples],
