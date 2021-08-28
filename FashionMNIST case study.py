@@ -1,3 +1,11 @@
+################################################################################################################
+##### This code is part of the Medium story 'Hybrid Quantum-Classical Neural Network for classification   ######
+##### of images in FashionMNIST dataset' case study. Parts of the code may have been imported from Qiskit ######
+##### textbook and from the exercises of the Qiskit global summer school on Quantum Machine Learning. The ######  
+##### case study was a challenge to put insights from the Qiskit summer school into practice and explore  ######                                                                 ######
+##### the hybrid quantum-classical neural network architecture.                                           ######
+################################################################################################################
+
 import numpy as np
 import torch
 from torchvision.transforms import ToTensor
