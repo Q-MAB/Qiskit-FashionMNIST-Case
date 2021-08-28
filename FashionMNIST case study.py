@@ -108,8 +108,8 @@ test_loader = DataLoader(X_test, batch_size=64, shuffle=True)
 ### Two layer QNN constructed ###
 feature_map = ZZFeatureMap(feature_dimension=2, entanglement='linear')
 ansatz = RealAmplitudes(2, reps=1, entanglement='linear')
-qnn4 = TwoLayerQNN(2, feature_map, ansatz, input_gradients=True, exp_val=AerPauliExpectation(), quantum_instance=qi)
-print(qnn4.operator)
+qnn2 = TwoLayerQNN(2, feature_map, ansatz, input_gradients=True, exp_val=AerPauliExpectation(), quantum_instance=qi)
+print(qnn2.operator)
 
 
 ### Torch NN module from Qiskit ###
@@ -122,7 +122,7 @@ class Net(Module):
         self.dropout = Dropout2d()
         self.fc1 = Linear(256, 64)
         self.fc2 = Linear(64, 2)         # 2-dimensional input to QNN
-        self.qnn = TorchConnector(qnn4)  # Apply torch connector, weights chosen
+        self.qnn = TorchConnector(qnn2)  # Apply torch connector, weights chosen
         self.fc3 = Linear(1, 1)          # uniformly at random from interval [-1,1].
                                          # 1-dimensional output from QNN
 
