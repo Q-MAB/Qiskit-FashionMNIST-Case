@@ -3,7 +3,8 @@
 #of images in FashionMNIST dataset' case study. Parts of the code may have been imported from Qiskit 
 #textbook and from the exercises of the Qiskit global summer school on Quantum Machine Learning. The 
 #case study was a challenge to put insights from the Qiskit summer school into practice and explore                                                   
-#the hybrid quantum-classical neural network architecture.                                           
+#the hybrid quantum-classical neural network architecture. 
+#A story on the case study can be found here: medium.com/QMAB 
 #####################################################################################################
 
 import numpy as np
